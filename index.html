@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eggplant Crop Pest Detection</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2E7D32;
+            --light-color: #F1F8E9;
+            --dark-color: #1B5E20;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-container {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--primary-color);
+            background-color: var(--light-color);
+        }
+        
+        .result-card {
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .pest-image {
+            max-height: 200px;
+            object-fit: contain;
+        }
+        
+        .confidence-meter {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 0;
+            }
+            
+            .display-4 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf me-2"></i>Eggplant Pest Detector
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#detect">Detect Pests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#results">Results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <!--li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </!--li-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Protect Your Eggplant Crops</h1>
+            <p class="lead mb-5">AI-powered pest detection for healthier crops and better yields</p>
+            <a href="#detect" class="btn btn-light btn-lg px-4 me-2">
+                <i class="fas fa-camera me-2"></i>Detect Now
+            </a>
+            <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4">
+                <i class="fas fa-info-circle me-2"></i>Learn More
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Detection Section -->
+        <section id="detect" class="my-5 py-4">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="fw-bold">Pest Detection</h2>
+                    <p class="lead">Upload an image of your eggplant plant to detect pests</p>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <!-- Tab navigation -->
+                    <ul class="nav nav-tabs mb-4" id="detectionTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab">Upload Image</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="camera-tab" data-bs-toggle="tab" data-bs-target="#camera" type="button" role="tab">Use Camera</button>
+                        </li>
+                    </ul>
+                    
+                    <!-- Tab content -->
+                    <div class="tab-content" id="detectionTabContent">
+                        <!-- Upload Image Tab -->
+                        <div class="tab-pane fade show active" id="upload" role="tabpanel">
+                            <div class="upload-container" id="uploadContainer">
+                                <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                <h4>Upload Eggplant Plant Image</h4>
+                                <p class="text-muted">Drag & drop your image here or click to browse</p>
+                                <input type="file" id="imageUpload" accept="image/*" class="d-none">
+                                <button class="btn btn-primary mt-3" onclick="document.getElementById('imageUpload').click()">
+                                    <i class="fas fa-folder-open me-2"></i>Select Image
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Camera Tab -->
+                        <div class="tab-pane fade" id="camera" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title mb-3">Live Camera Detection</h5>
+                                    <div class="position-relative mx-auto" style="max-width: 500px;">
+                                        <video id="cameraFeed" autoplay playsinline class="img-fluid rounded" style="max-height: 400px;"></video>
+                                        <canvas id="cameraCanvas" class="d-none"></canvas>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button id="startCameraBtn" class="btn btn-success me-2">
+                                            <i class="fas fa-video me-2"></i>Start Camera
+                                        </button>
+                                        <button id="stopCameraBtn" class="btn btn-danger me-2" disabled>
+                                            <i class="fas fa-stop me-2"></i>Stop Camera
+                                        </button>
+                                        <button id="captureBtn" class="btn btn-primary" disabled>
+                                            <i class="fas fa-camera me-2"></i>Capture & Analyze
+                                        </button>
+                                    </div>
+                                    <div id="cameraStatus" class="mt-2 text-muted">
+                                        Camera is off. Click "Start Camera" to begin.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview and Results (initially hidden) -->
+                    <div id="resultsSection" class="mt-4 d-none">
+                        <div class="card result-card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Detection Results</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <img id="previewImage" src="#" alt="Uploaded Image" class="img-fluid pest-image rounded">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Detected Pest: <span id="pestName" class="text-success">Eggplant Beetle</span></h5>
+                                        <p class="mb-2">Confidence: <span id="confidenceValue">92</span>%</p>
+                                        <div class="confidence-meter mb-3">
+                                            <div id="confidenceFill" class="confidence-fill" style="width: 92%"></div>
+                                        </div>
+                                        <div class="alert alert-warning">
+                                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Recommended Action</h6>
+                                            <div id="recommendation">
+                                                <div><strong>Chemical:</strong> <span id="chemical">Loading...</span></div>
+                                                <div><strong>Biological:</strong> <span id="biological">Loading...</span></div>
+                                                <div><strong>Cultural:</strong> <span id="cultural">Loading...</span></div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-success w-100" onclick="saveResultToLocal(); loadSavedResults();">
+                                            <i class="fas fa-save me-2"></i>Save Results
+                                        </button>
+                                        <button class="btn btn-primary w-100 mt-2" onclick="location.reload()">
+                                            <i class="fas fa-redo me-2"></i>Refresh
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="my-5 py-4">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="fw-bold">How It Works</h2>
+                    <p class="lead">Simple steps to protect your crops</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center p-3">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h4>1. Capture Image</h4>
+                        <p>Take a clear photo of your eggplant plant's leaves or stems where you suspect pest activity.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center p-3">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h4>2. Upload Photo</h4>
+                        <p>Upload the image through our simple interface. Our system will process it immediately.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center p-3">
+                        <div class="feature-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h4>3. Get Results</h4>
+                        <p>Receive instant pest identification with treatment recommendations to protect your crops.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Previous Results (Sample) -->
+        <section id="results" class="my-5 py-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="fw-bold">My Previous Results</h2>
+                    <p>View your pest detection history</p>
+                </div>
+            </div>
+            
+            <div class="row" id="resultsContainer">
+                <div class="col-md-6 col-lg-4 mb-4" id="result1">
+                    <div class="card">
+                        <img src="https://blogs.cornell.edu/livegpath/files/2022/05/Eggplant-Verticillium.jpg" class="card-img-top" alt="Eggplant plant">
+                        <div class="card-body">
+                            <h5 class="card-title">Eggplant Beetle</h5>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-success">92% Confidence</span>
+                                <small class="text-muted">June 15, 2023</small>
+                            </div>
+                            <p class="card-text">Detected on leaves. Recommended neem oil treatment.</p>
+                            <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#resultModal">View Details</button>
+                            <button class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="text-center mt-3">
+                <a href="#results" class="btn btn-outline-success">
+                    <i class="fas fa-history me-2"></i>View All Results
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="my-5 py-4">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-4">About Our System</h2>
+                    <p>Our Eggplant Pest Detection System is powered by an <strong>Artificial Neural Network (ANN)</strong> — the core technology behind our capstone project at Isabela State University - San Mateo. This deep learning model mimics the human brain’s pattern recognition capability to accurately classify pests from images of eggplant leaves and stems.</p>
+                    <p>We trained and deployed our ANN model using <strong>Roboflow</strong>, which provided the tools to preprocess field-collected images, augment data for robustness, and deploy a scalable inference API. The result is a practical tool that brings cutting-edge AI directly to farmers’ fingertips.</p>
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item bg-transparent"><i class="fas fa-brain text-primary me-2"></i><strong>ANN-Powered Detection</strong> – Learns complex visual patterns to identify pests with high precision.</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-sync-alt text-success me-2"></i><strong>Real-Time Analysis</strong> – Get instant results via Roboflow’s cloud-hosted inference engine.</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-spray-can text-warning me-2"></i><strong>Smart Treatment Plans</strong> – Tailored chemical, biological, and cultural recommendations per pest.</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-history text-info me-2"></i><strong>Personal Pest Log</strong> – Track detections over time to monitor crop health and intervention effectiveness.</li>
+                    </ul>
+                    <p>Designed specifically for smallholder farmers, our mobile-friendly web app requires minimal data and works reliably even on low-bandwidth connections — bringing university-grade AI research into real-world farming environments.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-50">
+                        <div class="card-body">
+                            <h5 class="card-title">Development Team</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-user-circle fa-3x text-muted"></i>
+                                        </div>
+                                       <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0">Princess A. Pabro</h6>
+                                            <small class="text-muted">Lead Developer</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-user-circle fa-3x text-muted"></i>
+                                        </div>
+                                        
+
+                                         <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0">Lorielyn F. Peralta</h6>
+                                            <small class="text-muted">Data Scientist</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-user-circle fa-3x text-muted"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0">Cindy O. Damatan</h6>
+                                            <small class="text-muted">UI/UX Designer</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <h5 class="card-title mt-3">Project Details</h5>
+                            <p><strong>Institution:</strong> Isabela State University - San Mateo</p>
+                            <p><strong>Degree Program:</strong> Bachelor of Science in Information Technology</p>
+                            <!--p><strong>Completion Date:</strong> 2025</!--p-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">Eggplant Pest Detector</h5>
+                    <p>An AI-powered solution for eggplant farmers to detect and manage pest problems effectively.</p>
+                    <!--div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    </!--div-->
+                </div>
+             
+                <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Contact</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> San Mateo, Isabela, Philippines</li>
+                        <!--li class="mb-2"><i class="fas fa-envelope me-2"></i> info@taropestdetector.edu</!--li-->
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +63 123 456 7890</li>
+                    </ul>
+                </div>
+            
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-12 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Eggplant Pest Detector. All rights reserved.</p>
+                </div>
+               
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Farmer Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Register</a></p>
+                        <p><a href="#">Forgot password?</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Farmer Registration</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="farmLocation" class="form-label">Farm Location</label>
+                            <input type="text" class="form-control" id="farmLocation">
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Register</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Detection Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card result-card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Detection Results</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <img id="showPreviewImage" src="#" alt="Uploaded Image" class="img-fluid pest-image rounded">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Detected Pest: <span id="showPestName" class="text-success">Eggplant Beetle</span></h5>
+                                    <p class="mb-2">Confidence: <span id="showConfidenceValue">92</span>%</p>
+                                    <div class="confidence-meter mb-3">
+                                        <div id="showConfidenceFill" class="confidence-fill" style="width: 92%"></div>
+                                    </div>
+                                    <div class="alert alert-warning">
+                                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Recommended Action</h6>
+                                        <div id="showRecommendation">
+                                            <div><strong>Chemical:</strong> <span id="showChemical">Loading...</span></div>
+                                            <div><strong>Biological:</strong> <span id="showBiological">Loading...</span></div>
+                                            <div><strong>Cultural:</strong> <span id="showCultural">Loading...</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">
+                        <i class="fas fa-trash-alt me-2"></i>Confirm Deletion
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this pest detection result?</p>
+                    <p class="text-muted small">This action cannot be undone.</p>
+                    <div class="alert alert-warning" id="deleteTargetInfo">
+                        <!-- Dynamically populated with pest name and date -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt me-1"></i>Delete Permanently
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="show-alert.js"></script>
+    <script>
+        // Load saved results when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedResults();
+
+            // Initialize the delete modal button listener
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+                if (resultToDeleteIndex !== null) {
+                    let savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+                    savedResults.splice(resultToDeleteIndex, 1); // Remove the item
+                    localStorage.setItem('savedResults', JSON.stringify(savedResults));
+                    loadSavedResults(); // Reload the list
+
+                    // Hide the modal
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+                    deleteModal.hide();
+
+                    // Show a success toast/alert
+                    showAlert('Result deleted successfully!', 'success');
+
+                    // Reset the global variable
+                    resultToDeleteIndex = null;
+                }
+            });
+        });
+        function loadSavedResults() {
+            // Get the container where results will be displayed
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            // Clear any existing content (like the sample card)
+            resultsContainer.innerHTML = '';
+
+            // Retrieve saved results from localStorage
+            let savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+
+            // If no results, show a message
+            if (savedResults.length === 0) {
+                resultsContainer.innerHTML = '<div class="col-12"><div class="alert alert-info text-center">No saved results yet. Go to the "Detect Pests" section to analyze an image.</div></div>';
+                return;
+            }
+
+            // Loop through each saved result and create a card
+            savedResults.forEach((result, index) => {
+                // Create a unique ID for each result card (useful for deletion)
+                const cardId = `savedResult-${index}`;
+
+                // Create the HTML for the card
+                const cardHTML = `
+                    <div class="col-md-6 col-lg-4 mb-4" id="${cardId}">
+                        <div class="card">
+                            <img src="${result.image || 'https://via.placeholder.com/300x200?text=No+Image'}" class="card-img-top" alt="Detected Pest" onerror="this.src='https://via.placeholder.com/300x200?text=Load+Error'">
+                            <div class="card-body">
+                                <h5 class="card-title">${result.pestName}</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="badge bg-${getBadgeColor(result.confidence)}">${result.confidence}% Confidence</span>
+                                    <small class="text-muted">${result.timestamp}</small>
+                                </div>
+                                <p class="card-text">Chemical: ${result.chemical.substring(0, 50)}...</p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary view-details-btn" data-toggle="modal" data-target="#resultModal" data-index="${index}">
+                                        View Details
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger delete-btn" data-index="${index}">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;7
+
+                // Append the card to the container
+                resultsContainer.innerHTML += cardHTML;
+            });
+
+            // Add event listeners to the "View Details" and "Delete" buttons
+            document.querySelectorAll('.view-details-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showResultDetails(savedResults[index]);
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    deleteResult(index);
+                });
+            });
+        }
+
+        // Helper function to determine badge color based on confidence
+        function getBadgeColor(confidence) {
+            if (confidence >= 80) return 'success';
+            if (confidence >= 60) return 'warning';
+            return 'danger';
+        }
+
+        // Function to show detailed result in a modal (optional, but recommended)
+       function showResultDetails(result) {
+            // Populate the modal fields
+            document.getElementById('showPreviewImage').src = result.image || 'https://via.placeholder.com/300x200?text=No+Image';
+            document.getElementById('showPreviewImage').onerror = function() {
+                this.src = 'https://via.placeholder.com/300x200?text=Load+Error';
+            };
+            document.getElementById('showPestName').textContent = result.pestName;
+            document.getElementById('showPestName').className = 'text-success'; // Reset class
+            document.getElementById('showConfidenceValue').textContent = result.confidence;
+            document.getElementById('showConfidenceFill').style.width = result.confidence + '%';
+
+            // Update treatment recommendations
+            document.getElementById('showChemical').textContent = result.chemical || "N/A";
+            document.getElementById('showBiological').textContent = result.biological || "N/A";
+            document.getElementById('showCultural').textContent = result.cultural || "N/A";
+
+            // Show the modal using Bootstrap's JavaScript API
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            resultModal.show();
+        }
+
+        // Function to delete a specific result
+        // Variable to store the index of the result to be deleted
+        let resultToDeleteIndex = null;
+        function deleteResult(index) {
+            resultToDeleteIndex = index; // Store the index globally for the modal button to access
+
+            // Get the result data to display in the modal
+            let savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+            const result = savedResults[index];
+
+            // Populate the modal with info about the item to be deleted
+            const deleteTargetInfo = document.getElementById('deleteTargetInfo');
+            deleteTargetInfo.innerHTML = `
+                <strong>Pest:</strong> ${result.pestName}<br>
+                <strong>Date:</strong> ${result.timestamp}<br>
+                <strong>Confidence:</strong> ${result.confidence}%
+            `;
+
+            // Show the modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            deleteModal.show();
+        }
+
+        function saveResultToLocal() {
+                const resultData = {
+                pestName: document.getElementById('pestName').textContent,
+                confidence: document.getElementById('confidenceValue').textContent,
+                chemical: document.getElementById('chemical').textContent,
+                biological: document.getElementById('biological').textContent,
+                cultural: document.getElementById('cultural').textContent,
+                timestamp: new Date().toLocaleString(),
+                image: document.getElementById('previewImage').src // Save the image!
+            };
+
+            let savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+            savedResults.unshift(resultData);
+            localStorage.setItem('savedResults', JSON.stringify(savedResults));
+
+            loadSavedResults(); // Reload the list to show the new item immediately
+            showAlert('Result saved successfully!', 'success');
+        }
+        // Simple image upload preview functionality
+        document.getElementById('imageUpload').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            const resultsDiv = document.getElementById('resultsSection'); // assuming this exists
+
+            if (!file) return;
+
+            // Show preview immediately
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('previewImage').src = event.target.result;
+                document.getElementById('uploadContainer').classList.add('d-none');
+                document.getElementById('resultsSection').classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+
+            // Convert file to base64
+            const base64Image = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]); // remove data URL prefix
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            const API_KEY = "b8o5nGaqh5Zkc20yVtGW";
+            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-classification-t6e3h/4?api_key=${API_KEY}`;
+
+            try {
+                document.getElementById('pestName').textContent = "⏳ Analyzing...";
+                document.getElementById('confidenceValue').textContent = "";
+                document.getElementById('confidenceFill').style.width = "0%";
+                document.getElementById('chemical').textContent = "Loading...";
+                document.getElementById('biological').textContent = "Loading...";
+                document.getElementById('cultural').textContent = "Loading...";
+                const response = await fetch(MODEL_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: base64Image
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Inference failed: ${response.status} ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log("✅ Inference Result:", result);
+
+                // Extract top prediction
+                const topPrediction = result.predictions && result.predictions.length > 0 
+                    ? result.predictions[0] 
+                    : { class: "Unknown" || "reject" };
+
+                const pestClass = topPrediction.class;
+                const confidence = Math.round(topPrediction.confidence * 100); // convert to percentage
+
+                // Define treatments mapping
+                const treatmentMap = {
+                    "mealybugs": {
+                        "Chemical": "Apply Buprofezin, Acetamiprid, or mineral oils. Target undersides of leaves and stems. Rotate chemicals to prevent resistance.",
+                        "Biological": "Release natural predators like Cryptolaemus montrouzieri (ladybird beetle) or parasitic wasps (Anagyrus spp.).",
+                        "Cultural": "Remove heavily infested parts. Control ant populations that protect mealybugs. Use strong water spray to dislodge nymphs."
+                    },
+                    "mexican_bean_beetles": {
+                        "Chemical": "Spray insecticides like Buprofezin, Imidacloprid, or Dinotefuran when infestation is high. Focus on the undersides of leaves.",
+                        "Biological": "Conserve natural predators such as spiders, green lacewings, and lady beetles. Avoid broad-spectrum insecticides that kill them.",
+                        "Cultural": "Remove weed hosts. Use yellow sticky traps to monitor adult populations. Practice field sanitation by removing crop residues."
+                    },
+                    "green_peach_aphids": {
+                        "Chemical": "Use selective insecticides like Acetamiprid, Imidacloprid, or Flonicamid. Avoid excessive use to prevent resistance.",
+                        "Biological": "Introduce or conserve beneficial insects like ladybugs, lacewings, and hoverfly larvae. Aphidius colemani is a highly effective parasitic wasp.",
+                        "Cultural": "Use reflective mulches to deter aphids. Remove infected leaves to control virus spread. Plant trap crops to attract aphids away from eggplants."
+                    }
+                };
+
+                // Fallback if class not recognized
+                const treatment = treatmentMap[pestClass] || "No specific treatment available. Consult an expert.";
+
+                // Update UI
+                document.getElementById('pestName').textContent = pestClass.replace(/_/g, ' '); // e.g., "green_leaf_hopper" → "green leaf hopper"
+                document.getElementById('confidenceValue').textContent = confidence;
+                document.getElementById('confidenceFill').style.width = confidence + '%';
+                // Only update detailed treatments if pestClass exists in treatmentMap
+                if (treatmentMap[pestClass]) {
+                    document.getElementById('chemical').textContent = treatmentMap[pestClass]["Chemical"];
+                    document.getElementById('biological').textContent = treatmentMap[pestClass]["Biological"];
+                    document.getElementById('cultural').textContent = treatmentMap[pestClass]["Cultural"];
+                } else {
+                    // Optionally, clear or set fallback text for each section
+                    document.getElementById('chemical').textContent = "N/A";
+                    document.getElementById('biological').textContent = "N/A";
+                    document.getElementById('cultural').textContent = "N/A";
+                }
+
+            } catch (error) {
+                console.error("❌ Error:", error);
+                document.getElementById('pestName').textContent = "Error";
+                document.getElementById('recommendation').textContent = "Failed to analyze image: " + error.message;
+            }
+        });
+
+        // Drag and drop functionality
+        const uploadContainer = document.getElementById('uploadContainer');
+        
+        uploadContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadContainer.classList.add('border-primary');
+            uploadContainer.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+        });
+        
+        uploadContainer.addEventListener('dragleave', () => {
+            uploadContainer.classList.remove('border-primary');
+            uploadContainer.style.backgroundColor = '';
+        });
+        
+        uploadContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadContainer.classList.remove('border-primary');
+            uploadContainer.style.backgroundColor = '';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.match('image.*')) {
+                document.getElementById('imageUpload').files = e.dataTransfer.files;
+                const event = new Event('change');
+                document.getElementById('imageUpload').dispatchEvent(event);
+            }
+        });
+        
+        // Camera functionality
+        let cameraStream = null;
+        const cameraFeed = document.getElementById('cameraFeed');
+        const cameraCanvas = document.getElementById('cameraCanvas');
+        const startCameraBtn = document.getElementById('startCameraBtn');
+        const stopCameraBtn = document.getElementById('stopCameraBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const cameraStatus = document.getElementById('cameraStatus');
+        
+        // Start camera
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }, 
+                    audio: false 
+                });
+                
+                cameraFeed.srcObject = cameraStream;
+                startCameraBtn.disabled = true;
+                stopCameraBtn.disabled = false;
+                captureBtn.disabled = false;
+                cameraStatus.textContent = 'Camera is active. Point at an eggplant plant and click "Capture & Analyze".';
+                cameraStatus.className = 'mt-2 text-success';
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                cameraStatus.textContent = 'Error accessing camera: ' + err.message;
+                cameraStatus.className = 'mt-2 text-danger';
+            }
+        });
+        
+        // Stop camera
+        stopCameraBtn.addEventListener('click', () => {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            
+            cameraFeed.srcObject = null;
+            startCameraBtn.disabled = false;
+            stopCameraBtn.disabled = true;
+            captureBtn.disabled = true;
+            cameraStatus.textContent = 'Camera is off. Click "Start Camera" to begin.';
+            cameraStatus.className = 'mt-2 text-muted';
+        });
+        
+        // Capture and analyze frame
+        captureBtn.addEventListener('click', async () => {
+            if (!cameraStream) return;
+
+            // Set canvas dimensions to match video
+            cameraCanvas.width = cameraFeed.videoWidth;
+            cameraCanvas.height = cameraFeed.videoHeight;
+
+            // Draw current video frame to canvas
+            const ctx = cameraCanvas.getContext('2d');
+            ctx.drawImage(cameraFeed, 0, 0, cameraCanvas.width, cameraCanvas.height);
+
+            // Get image data from canvas as base64 (without data URL prefix)
+            const imageDataUrl = cameraCanvas.toDataURL('image/jpeg');
+            const base64Image = imageDataUrl.split(',')[1]; // remove "data:image/jpeg;base64,"
+
+            // Display captured image in results section
+            document.getElementById('previewImage').src = imageDataUrl;
+            document.getElementById('uploadContainer').classList.add('d-none');
+            document.getElementById('resultsSection').classList.remove('d-none');
+
+            const API_KEY = "b8o5nGaqh5Zkc20yVtGW";
+            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-classification-t6e3h/4?api_key=${API_KEY}`;
+
+            try {
+                document.getElementById('pestName').textContent = "⏳ Analyzing...";
+                document.getElementById('confidenceValue').textContent = "";
+                document.getElementById('confidenceFill').style.width = "0%";
+                document.getElementById('chemical').textContent = "Loading...";
+                document.getElementById('biological').textContent = "Loading...";
+                document.getElementById('cultural').textContent = "Loading...";
+
+
+                const response = await fetch(MODEL_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: base64Image
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Inference failed: ${response.status} ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log("✅ Camera Capture Inference Result:", result);
+
+                // Extract top prediction
+                const topPrediction = result.predictions && result.predictions.length > 0 
+                    ? result.predictions[0] 
+                    : { class: "Unknown" || "reject"};
+
+                const pestClass = topPrediction.class;
+                const confidence = Math.round(topPrediction.confidence * 100); // convert to percentage
+
+                // Define treatments mapping
+                const treatmentMap = {
+                    "mealybugs": {
+                        "Chemical": "Apply Buprofezin, Acetamiprid, or mineral oils. Target undersides of leaves and stems. Rotate chemicals to prevent resistance.",
+                        "Biological": "Release natural predators like Cryptolaemus montrouzieri (ladybird beetle) or parasitic wasps (Anagyrus spp.).",
+                        "Cultural": "Remove heavily infested parts. Control ant populations that protect mealybugs. Use strong water spray to dislodge nymphs."
+                    },
+                    "green_leaf_hopper": {
+                        "Chemical": "Spray insecticides like Buprofezin, Imidacloprid, or Dinotefuran when infestation is high. Focus on the undersides of leaves.",
+                        "Biological": "Conserve natural predators such as spiders, green lacewings, and lady beetles. Avoid broad-spectrum insecticides that kill them.",
+                        "Cultural": "Remove weed hosts. Use yellow sticky traps to monitor adult populations. Practice field sanitation by removing crop residues."
+                    },
+                    "green_peach_aphids": {
+                        "Chemical": "Use selective insecticides like Acetamiprid, Imidacloprid, or Flonicamid. Avoid excessive use to prevent resistance.",
+                        "Biological": "Introduce or conserve beneficial insects like ladybugs, lacewings, and hoverfly larvae. Aphidius colemani is a highly effective parasitic wasp.",
+                        "Cultural": "Use reflective mulches to deter aphids. Remove infected leaves to control virus spread. Plant trap crops to attract aphids away from eggplants."
+                    }
+                };
+
+
+                // Fallback if class not recognized
+                const treatment = treatmentMap[pestClass] || "No specific treatment available. Consult an expert.";
+
+                // Update UI
+                document.getElementById('pestName').textContent = pestClass.replace(/_/g, ' '); // e.g., "green_leaf_hopper" → "green leaf hopper"
+                document.getElementById('confidenceValue').textContent = confidence;
+                document.getElementById('confidenceFill').style.width = confidence + '%';
+                // Only update detailed treatments if pestClass exists in treatmentMap
+                if (treatmentMap[pestClass]) {
+                    document.getElementById('chemical').textContent = treatmentMap[pestClass]["Chemical"];
+                    document.getElementById('biological').textContent = treatmentMap[pestClass]["Biological"];
+                    document.getElementById('cultural').textContent = treatmentMap[pestClass]["Cultural"];
+                } else {
+                    // Optionally, clear or set fallback text for each section
+                    document.getElementById('chemical').textContent = "N/A";
+                    document.getElementById('biological').textContent = "N/A";
+                    document.getElementById('cultural').textContent = "N/A";
+                }
+
+            } catch (error) {
+                console.error("❌ Error during camera capture analysis:", error);
+                document.getElementById('pestName').textContent = "Error";
+                document.getElementById('recommendation').textContent = "Failed to analyze image: " + error.message;
+            }
+        });
+        
+        // Clean up camera when switching tabs
+        document.getElementById('upload-tab').addEventListener('click', () => {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+                cameraFeed.srcObject = null;
+                startCameraBtn.disabled = false;
+                stopCameraBtn.disabled = true;
+                captureBtn.disabled = true;
+                cameraStatus.textContent = 'Camera is off. Click "Start Camera" to begin.';
+                cameraStatus.className = 'mt-2 text-muted';
+            }
+        });
+    </script>
+</body>
+</html>
