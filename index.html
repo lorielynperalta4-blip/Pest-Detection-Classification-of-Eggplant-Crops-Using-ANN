@@ -797,7 +797,7 @@
             });
 
             const API_KEY = "b8o5nGaqh5Zkc20yVtGW";
-            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-classification-t6e3h/4?api_key=${API_KEY}`;
+            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-detection-a0hnb/1?api_key=${API_KEY}`;
 
             try {
                 document.getElementById('pestName').textContent = "⏳ Analyzing...";
@@ -822,12 +822,28 @@
                 console.log("✅ Inference Result:", result);
 
                 // Extract top prediction
-                const topPrediction = result.predictions && result.predictions.length > 0 
+                const topPrediction = result.predictions && result.predictions.length > 0 || result.predictions != ''
                     ? result.predictions[0] 
                     : { class: "Unknown" || "reject" };
 
                 const pestClass = topPrediction.class;
                 const confidence = Math.round(topPrediction.confidence * 100); // convert to percentage
+
+                // Check if confidence is below 90%
+                if (confidence < 90) {
+                    document.getElementById('pestName').textContent = "Low Confidence Detection";
+                    document.getElementById('pestName').className = 'text-warning';
+                    document.getElementById('confidenceValue').textContent = confidence;
+                    document.getElementById('confidenceFill').style.width = confidence + '%';
+                    document.getElementById('confidenceFill').style.backgroundColor = '#ffc107'; // warning color
+                    document.getElementById('chemical').textContent = "Confidence too low for reliable identification.";
+                    document.getElementById('biological').textContent = "Please take a clearer photo with better lighting.";
+                    document.getElementById('cultural').textContent = "Ensure the pest is clearly visible and in focus.";
+                    return;
+                }
+
+                // Reset confidence bar color for valid detections
+                document.getElementById('confidenceFill').style.backgroundColor = '';
 
                 // Define treatments mapping
                 const treatmentMap = {
@@ -972,7 +988,7 @@
             document.getElementById('resultsSection').classList.remove('d-none');
 
             const API_KEY = "b8o5nGaqh5Zkc20yVtGW";
-            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-classification-t6e3h/4?api_key=${API_KEY}`;
+            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-detection-a0hnb/1?api_key=${API_KEY}`;
 
             try {
                 document.getElementById('pestName').textContent = "⏳ Analyzing...";
@@ -999,12 +1015,28 @@
                 console.log("✅ Camera Capture Inference Result:", result);
 
                 // Extract top prediction
-                const topPrediction = result.predictions && result.predictions.length > 0 
+                const topPrediction = result.predictions && result.predictions.length > 0 || result.predictions != ''
                     ? result.predictions[0] 
                     : { class: "Unknown" || "reject"};
 
                 const pestClass = topPrediction.class;
                 const confidence = Math.round(topPrediction.confidence * 100); // convert to percentage
+
+                 // Check if confidence is below 90%
+                if (confidence < 90) {
+                    document.getElementById('pestName').textContent = "Low Confidence Detection";
+                    document.getElementById('pestName').className = 'text-warning';
+                    document.getElementById('confidenceValue').textContent = confidence;
+                    document.getElementById('confidenceFill').style.width = confidence + '%';
+                    document.getElementById('confidenceFill').style.backgroundColor = '#ffc107'; // warning color
+                    document.getElementById('chemical').textContent = "Confidence too low for reliable identification.";
+                    document.getElementById('biological').textContent = "Please take a clearer photo with better lighting.";
+                    document.getElementById('cultural').textContent = "Ensure the pest is clearly visible and in focus.";
+                    return;
+                }
+
+                // Reset confidence bar color for valid detections
+                document.getElementById('confidenceFill').style.backgroundColor = '';
 
                 // Define treatments mapping
                 const treatmentMap = {
