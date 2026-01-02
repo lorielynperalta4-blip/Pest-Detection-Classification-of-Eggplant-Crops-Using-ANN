@@ -797,7 +797,7 @@
             });
 
             const API_KEY = "b8o5nGaqh5Zkc20yVtGW";
-            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-detection-a0hnb/1?api_key=${API_KEY}`;
+            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-detection-a0hnb/3?api_key=${API_KEY}`;
 
             try {
                 document.getElementById('pestName').textContent = "⏳ Analyzing...";
@@ -830,7 +830,7 @@
                 const confidence = Math.round(topPrediction.confidence * 100); // convert to percentage
 
                 // Check if confidence is below 90%
-                if (confidence < 90) {
+                if (confidence < 70) {
                     document.getElementById('pestName').textContent = "Low Confidence Detection";
                     document.getElementById('pestName').className = 'text-warning';
                     document.getElementById('confidenceValue').textContent = confidence;
@@ -847,7 +847,7 @@
 
                 // Define treatments mapping
                 const treatmentMap = {
-                    "mealybugs": {
+                    "oxyopes_javanus": {
                         "Chemical": "Apply Buprofezin, Acetamiprid, or mineral oils. Target undersides of leaves and stems. Rotate chemicals to prevent resistance.",
                         "Biological": "Release natural predators like Cryptolaemus montrouzieri (ladybird beetle) or parasitic wasps (Anagyrus spp.).",
                         "Cultural": "Remove heavily infested parts. Control ant populations that protect mealybugs. Use strong water spray to dislodge nymphs."
@@ -988,7 +988,7 @@
             document.getElementById('resultsSection').classList.remove('d-none');
 
             const API_KEY = "b8o5nGaqh5Zkc20yVtGW";
-            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-detection-a0hnb/1?api_key=${API_KEY}`;
+            const MODEL_URL = `https://serverless.roboflow.com/eggplant-pest-detection-a0hnb/3?api_key=${API_KEY}`;
 
             try {
                 document.getElementById('pestName').textContent = "⏳ Analyzing...";
@@ -1023,7 +1023,7 @@
                 const confidence = Math.round(topPrediction.confidence * 100); // convert to percentage
 
                  // Check if confidence is below 90%
-                if (confidence < 90) {
+                if (confidence < 70) {
                     document.getElementById('pestName').textContent = "Low Confidence Detection";
                     document.getElementById('pestName').className = 'text-warning';
                     document.getElementById('confidenceValue').textContent = confidence;
@@ -1040,7 +1040,7 @@
 
                 // Define treatments mapping
                 const treatmentMap = {
-                    "mealybugs": {
+                    "oxyopes_javanus": {
                         "Chemical": "Apply Buprofezin, Acetamiprid, or mineral oils. Target undersides of leaves and stems. Rotate chemicals to prevent resistance.",
                         "Biological": "Release natural predators like Cryptolaemus montrouzieri (ladybird beetle) or parasitic wasps (Anagyrus spp.).",
                         "Cultural": "Remove heavily infested parts. Control ant populations that protect mealybugs. Use strong water spray to dislodge nymphs."
@@ -1100,3 +1100,4 @@
     </script>
 </body>
 </html>
+
